@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Napoliansk Pizza PRO+ – GitHub</title>
+  <title>Napoliansk Pizza PRO+ – GitHub med pizzaforslag</title>
   <style>
     :root {
       --bg: #fff7ed;
       --card: #ffffff;
       --primary: #c2410c;
       --primary2: #ea580c;
-      --muted: #6b7280;
+      --primary3: #fb923c;
       --text: #1f2937;
+      --muted: #6b7280;
       --border: #e5e7eb;
       --soft: #fff1e8;
-      --radius: 22px;
       --shadow: 0 10px 26px rgba(0,0,0,.08);
+      --radius: 22px;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -25,62 +26,41 @@
       background: linear-gradient(135deg, var(--bg), #fff 45%, #fef2f2);
       min-height: 100vh;
     }
-    .container { max-width: 1320px; margin: 0 auto; padding: 14px; }
+    .container { max-width: 1360px; margin: 0 auto; padding: 14px; }
     .tabs { display:flex; gap:10px; flex-wrap:wrap; margin: 0 0 18px; }
-    .tab {
-      border:1px solid var(--border); background:#fff; color:var(--text); border-radius:999px; padding:10px 16px; font-weight:700; cursor:pointer;
-    }
+    .tab { border:1px solid var(--border); background:#fff; color:var(--text); border-radius:999px; padding:10px 16px; font-weight:700; cursor:pointer; }
     .tab.active { background:#fff7ed; color:var(--primary); border-color:#fb923c; box-shadow:0 0 0 4px rgba(251,146,60,.12); }
     .page { display:none; }
     .page.active { display:block; }
-    .layout { display:grid; grid-template-columns:1.65fr 1fr; gap:18px; align-items:start; }
-    .card {
-      background: var(--card); border: 1px solid rgba(255,255,255,.85); border-radius: var(--radius); box-shadow: var(--shadow); overflow:hidden;
-    }
+    .layout { display:grid; grid-template-columns: 1.7fr 1fr; gap:18px; align-items:start; }
+    .card { background:var(--card); border:1px solid rgba(255,255,255,.9); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
     .card-header { padding:20px 20px 8px; }
     .card-body { padding:20px; }
     .hero { display:flex; justify-content:space-between; gap:14px; align-items:center; flex-wrap:wrap; }
     .title-wrap { display:flex; gap:14px; align-items:center; flex:1 1 340px; }
-    .emoji {
-      width:58px; height:58px; border-radius:18px; display:grid; place-items:center; background:#ffedd5; font-size:28px; flex:0 0 auto;
-    }
-    .pizza-mini {
-      width:72px; height:72px; border-radius:50%; position:relative; flex:0 0 auto;
-      background: radial-gradient(circle at 50% 50%, #fbbf24 0 58%, #d97706 59% 66%, #92400e 67% 100%);
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,.35), 0 8px 18px rgba(0,0,0,.12);
-    }
+    .emoji { width:58px; height:58px; border-radius:18px; display:grid; place-items:center; background:#ffedd5; font-size:28px; flex:0 0 auto; }
+    .pizza-mini { width:72px; height:72px; border-radius:50%; position:relative; background:radial-gradient(circle at 50% 50%, #fbbf24 0 58%, #d97706 59% 66%, #92400e 67% 100%); box-shadow: inset 0 0 0 3px rgba(255,255,255,.35), 0 8px 18px rgba(0,0,0,.12); flex:0 0 auto; }
     .pizza-mini.small { width:58px; height:58px; }
     .pizza-mini::before, .pizza-mini::after { content:""; position:absolute; border-radius:50%; }
-    .pizza-mini::before {
-      width:10px; height:10px; left:26px; top:24px; background:#b91c1c;
-      box-shadow:10px 8px 0 0 #b91c1c, -12px 10px 0 0 #b91c1c, 6px -14px 0 0 #b91c1c, -14px -6px 0 0 #b91c1c;
-    }
-    .pizza-mini::after {
-      width:6px; height:6px; left:18px; top:16px; background:#166534;
-      box-shadow:14px 18px 0 0 #166534, -6px 22px 0 0 #166534, 22px -2px 0 0 #166534, -4px -8px 0 0 #166534, 18px 2px 0 0 #166534;
-    }
-    h1, h2, p { margin:0; }
+    .pizza-mini::before { width:10px; height:10px; left:26px; top:24px; background:#b91c1c; box-shadow:10px 8px 0 0 #b91c1c, -12px 10px 0 0 #b91c1c, 6px -14px 0 0 #b91c1c, -14px -6px 0 0 #b91c1c; }
+    .pizza-mini::after { width:6px; height:6px; left:18px; top:16px; background:#166534; box-shadow:14px 18px 0 0 #166534, -6px 22px 0 0 #166534, 22px -2px 0 0 #166534, -4px -8px 0 0 #166534, 18px 2px 0 0 #166534; }
+    h1,h2,h3,p { margin:0; }
     h1 { font-size:1.95rem; }
     h2 { font-size:1.2rem; }
     .sub { color:var(--muted); margin-top:6px; line-height:1.45; }
-    .notice {
-      margin-top:14px; padding:12px 14px; background:var(--soft); border:1px solid #fed7aa; border-radius:16px; color:#9a3412; line-height:1.45;
-    }
+    .notice { margin-top:14px; padding:12px 14px; background:var(--soft); border:1px solid #fed7aa; border-radius:16px; color:#9a3412; line-height:1.45; }
     .section { margin-bottom:22px; }
     .section-title { font-size:1.06rem; font-weight:800; margin-bottom:12px; }
-    .grid-4, .grid-3, .meta-grid { display:grid; gap:12px; }
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .meta-grid { grid-template-columns: repeat(5, 1fr); gap:10px; }
-    .field, .meta-box, .summary, .ingredient, .step, .timeline-item, .shop-item, .preset {
-      background:#fff; border:1px solid var(--border); border-radius:18px;
-    }
+    .grid-4, .grid-3, .meta-grid, .pizza-grid { display:grid; gap:12px; }
+    .grid-4 { grid-template-columns:repeat(4,1fr); }
+    .grid-3 { grid-template-columns:repeat(3,1fr); }
+    .meta-grid { grid-template-columns:repeat(5,1fr); gap:10px; }
+    .pizza-grid { grid-template-columns:repeat(2,1fr); }
+    .field, .meta-box, .summary, .ingredient, .step, .timeline-item, .shop-item, .preset, .pizza-card { background:#fff; border:1px solid var(--border); border-radius:18px; }
     .field { padding:12px 14px; }
     .field label { display:block; font-weight:700; margin-bottom:8px; }
     .hint, .small, .muted { color:var(--muted); font-size:.94rem; line-height:1.45; }
-    select, input[type="number"], input[type="text"] {
-      width:100%; border:1px solid var(--border); border-radius:14px; padding:12px 13px; font-size:16px; background:#fff;
-    }
+    select, input[type="number"], input[type="text"] { width:100%; border:1px solid var(--border); border-radius:14px; padding:12px 13px; font-size:16px; background:#fff; }
     .range-wrap { display:grid; gap:8px; }
     .range-label { display:flex; justify-content:space-between; font-weight:700; }
     input[type="range"] { width:100%; }
@@ -94,28 +74,28 @@
     .meta-box { padding:14px; }
     .meta-kicker { color:var(--muted); font-size:.88rem; }
     .meta-value { color:var(--primary); font-size:1.08rem; font-weight:800; margin-top:4px; }
-    .idx {
-      width:32px; height:32px; border-radius:999px; display:grid; place-items:center; background:#ffedd5; color:var(--primary); font-weight:800; flex:0 0 auto;
-    }
-    .badge {
-      display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; font-size:.88rem; font-weight:700; background:#fff7ed; color:var(--primary); border:1px solid #fed7aa;
-    }
+    .idx { width:32px; height:32px; border-radius:999px; display:grid; place-items:center; background:#ffedd5; color:var(--primary); font-weight:800; flex:0 0 auto; }
+    .badge { display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; font-size:.88rem; font-weight:700; background:#fff7ed; color:var(--primary); border:1px solid #fed7aa; }
     .rows { display:grid; gap:8px; }
-    .row {
-      display:grid; grid-template-columns:1.5fr .85fr .85fr; gap:10px; align-items:center; padding:10px 12px; border:1px solid var(--border); border-radius:16px; background:#fff;
-    }
+    .row { display:grid; grid-template-columns:1.5fr .85fr .85fr; gap:10px; align-items:center; padding:10px 12px; border:1px solid var(--border); border-radius:16px; background:#fff; }
     .row.header { background:#f9fafb; font-weight:800; }
     .actions { display:grid; gap:10px; }
-    .btn {
-      border:0; cursor:pointer; border-radius:16px; padding:14px 15px; font-weight:700;
-    }
+    .btn { border:0; cursor:pointer; border-radius:16px; padding:14px 15px; font-weight:700; }
     .btn-primary { background:var(--primary2); color:#fff; }
     .btn-secondary { background:#fff; color:var(--text); border:1px solid var(--border); }
     .btn-ghost { background:#fff7ed; color:var(--primary); border:1px solid #fed7aa; }
     .sticky { position:sticky; top:14px; }
     .footer { text-align:center; color:var(--muted); font-size:.88rem; margin:14px 0 4px; }
+    .pizza-card { padding:14px; display:grid; gap:10px; }
+    .pizza-card-title { display:flex; justify-content:space-between; gap:8px; align-items:start; }
+    .pizza-actions { display:flex; gap:10px; align-items:center; }
+    .counter { min-width:32px; text-align:center; font-weight:800; }
+    .pizza-btn { border:1px solid var(--border); background:#fff; color:var(--text); border-radius:12px; width:38px; height:38px; font-weight:800; cursor:pointer; }
+    .pizza-btn:hover { background:#fff7ed; border-color:#fb923c; color:var(--primary); }
+    .pizza-badge { padding:4px 8px; border-radius:999px; background:#fff7ed; color:var(--primary); border:1px solid #fed7aa; font-size:.82rem; font-weight:700; }
 
     @media (max-width:1080px) { .layout { grid-template-columns:1fr; } .sticky { position:static; } }
+    @media (max-width:860px) { .pizza-grid { grid-template-columns:1fr; } }
     @media (max-width:760px) {
       .container { padding:10px; }
       .card-header, .card-body { padding:16px; }
@@ -152,18 +132,18 @@
                 <div class="emoji">🍕</div>
                 <div>
                   <h1>Napoliansk Pizza PRO+</h1>
-                  <p class="sub">GitHub-klar versjon med fri deigballvekt, hydrering, fermentering, temperaturvalg, pizzaovn uten Ooni-tekst og egen handleliste-side.</p>
+                  <p class="sub">GitHub-klar versjon med pizzaforslag fra bildet. Når en pizza legges til, oppdateres handlelisten automatisk med passende saus og topping.</p>
                 </div>
               </div>
               <div class="pizza-mini" aria-hidden="true"></div>
             </div>
-            <div class="notice">Denne versjonen er laget som én statisk HTML-fil for GitHub Pages. Ingen backend er nødvendig.</div>
+            <div class="notice">Pizzaforslagene er hentet fra bildet: Nduja, Blåmuggost, Parma, Margherita, Pepperoni og Skinke, og Kylling. Mengder i handlelisten er praktiske estimater per pizza.</div>
           </div>
           <div class="card-body">
             <div class="section print-hide">
               <div class="section-title">Grunnoppsett</div>
               <div class="grid-4">
-                <div class="field"><label for="pizzaCount">Antall pizzaer</label><input id="pizzaCount" type="number" min="1" max="20" step="1" value="4"></div>
+                <div class="field"><label for="pizzaCount">Antall pizzaer (manuell)</label><input id="pizzaCount" type="number" min="1" max="20" step="1" value="4"><div class="hint">Brukes hvis ingen pizzaforslag er valgt.</div></div>
                 <div class="field"><label for="ballWeight">Deigball per pizza (g)</label><input id="ballWeight" type="number" min="180" max="400" step="1" value="250"><div class="hint">250 g er normal.</div></div>
                 <div class="field"><label for="hydration">Hydrering</label><div class="range-wrap"><div class="range-label"><span>Hydrering</span><span id="hydrationValue">62 %</span></div><input id="hydration" type="range" min="55" max="75" step="1" value="62"></div></div>
                 <div class="field"><label for="saltPct">Salt % av mel</label><input id="saltPct" type="number" min="2.0" max="3.5" step="0.1" value="2.5"></div>
@@ -185,8 +165,13 @@
               <div class="grid-3">
                 <div class="field"><label for="ovenType">Ovnstype</label><select id="ovenType"><option value="home">Vanlig hjemmeovn</option><option value="steel">Hjemmeovn + pizzastål</option><option value="pizza_oven">Pizzaovn</option><option value="wood">Vedfyrt ovn</option></select></div>
                 <div class="field"><label for="presetName">Preset-navn</label><input id="presetName" type="text" placeholder="F.eks. Fredag 48t 250g"></div>
-                <div class="field"><label>Handleliste</label><div class="hint">Alt du trenger til deig, pizzasaus og topping ligger på egen fane.</div></div>
+                <div class="field"><label>Valgte pizzaforslag</label><div class="hint" id="selectedPresetCountText">Ingen pizzaforslag valgt ennå.</div></div>
               </div>
+            </div>
+
+            <div class="section print-hide">
+              <div class="section-title">Forslag til pizzaer fra bildet</div>
+              <div class="pizza-grid" id="pizzaSuggestionGrid"></div>
             </div>
 
             <div class="section"><div class="section-title">Nøkkeltall</div><div class="meta-grid" id="metaGrid"></div></div>
@@ -228,12 +213,12 @@
                 <div class="emoji">🛒</div>
                 <div>
                   <h1>Handleliste</h1>
-                  <p class="sub">Alt du trenger til deig, pizzasaus og topping.</p>
+                  <p class="sub">Alt du trenger til deig, pizzasaus og topping – oppdatert etter valgte pizzaforslag.</p>
                 </div>
               </div>
               <div class="pizza-mini small" aria-hidden="true"></div>
             </div>
-            <div class="notice">Handlelisten oppdateres automatisk etter antall pizzaer og deigball-størrelse.</div>
+            <div class="notice">Når du trykker på et pizzaforslag på oppskriftssiden, legges passende ingredienser inn her automatisk.</div>
           </div>
           <div class="card-body"><div class="shop-sections" id="shoppingSections"></div></div>
         </main>
@@ -252,35 +237,34 @@
       wood: { title: 'Vedfyrt ovn', temp: '430–485 °C', time: '60–90 sek', summary: 'Klassisk stil. Hold jevn temperatur og bruk lett topping.' }
     };
 
+    const pizzaSuggestions = [
+      { id:'nduja', name:'Nduja', sauce:'Tomatsaus', ingredients:['Nduja','chili','mozzarella'], toppingWeights:{ tomatsaus:80, nduja:35, chili:5, mozzarella:90 } },
+      { id:'blamuggost', name:'Blåmuggost', sauce:'Hvitsaus', ingredients:['blåmuggost','pinjekjerner','ruccola','spekeskinke'], toppingWeights:{ hvitsaus:70, blamuggost:35, pinjekjerner:10, ruccola:15, spekeskinke:40 } },
+      { id:'parma', name:'Parma', sauce:'Hvitsaus', ingredients:['mozzarella','pinjekjerner','ruccola'], toppingWeights:{ hvitsaus:70, mozzarella:90, pinjekjerner:10, ruccola:15 } },
+      { id:'margherita', name:'Margherita', sauce:'Tomatsaus', ingredients:['mozzarella','fersk basilikum'], toppingWeights:{ tomatsaus:80, mozzarella:90, basilikum:3 } },
+      { id:'pepperoni_skinke', name:'Pepperoni og Skinke', sauce:'Tomatsaus', ingredients:['mozzarella','pepperoni','skinke'], toppingWeights:{ tomatsaus:80, mozzarella:90, pepperoni:35, skinke:40 } },
+      { id:'kylling', name:'Kylling', sauce:'Tomatsaus', ingredients:['marinert kylling','mozzarella','cherrytomater'], toppingWeights:{ tomatsaus:80, kylling:80, mozzarella:90, cherrytomater:50 } }
+    ];
+
     const $ = (id) => document.getElementById(id);
     const els = {
-      pizzaCount: $('pizzaCount'),
-      ballWeight: $('ballWeight'),
-      hydration: $('hydration'),
-      hydrationValue: $('hydrationValue'),
-      saltPct: $('saltPct'),
-      fridgeHours: $('fridgeHours'),
-      benchHours: $('benchHours'),
-      fridgeTemp: $('fridgeTemp'),
-      roomTemp: $('roomTemp'),
-      ovenType: $('ovenType'),
-      presetName: $('presetName'),
-      metaGrid: $('metaGrid'),
-      ingredientList: $('ingredientList'),
-      bakersTable: $('bakersTable'),
-      timeline: $('timeline'),
-      stepList: $('stepList'),
-      summary: $('summary'),
-      ovenSummary: $('ovenSummary'),
-      presetList: $('presetList'),
-      shoppingSections: $('shoppingSections'),
-      shoppingSummary: $('shoppingSummary')
+      pizzaCount: $('pizzaCount'), ballWeight: $('ballWeight'), hydration: $('hydration'), hydrationValue: $('hydrationValue'),
+      saltPct: $('saltPct'), fridgeHours: $('fridgeHours'), benchHours: $('benchHours'), fridgeTemp: $('fridgeTemp'), roomTemp: $('roomTemp'),
+      ovenType: $('ovenType'), presetName: $('presetName'), metaGrid: $('metaGrid'), ingredientList: $('ingredientList'),
+      bakersTable: $('bakersTable'), timeline: $('timeline'), stepList: $('stepList'), summary: $('summary'), ovenSummary: $('ovenSummary'),
+      presetList: $('presetList'), shoppingSections: $('shoppingSections'), shoppingSummary: $('shoppingSummary'),
+      pizzaSuggestionGrid: $('pizzaSuggestionGrid'), selectedPresetCountText: $('selectedPresetCountText')
     };
 
     const round1 = (n) => Math.round(n * 10) / 10;
     const round0 = (n) => Math.round(n);
     const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
     const fmtHours = (v) => Number.isInteger(v) ? `${v} t` : `${String(v).replace('.', ',')} t`;
+    const suggestionCounts = Object.fromEntries(pizzaSuggestions.map(p => [p.id, 0]));
+
+    function selectedSuggestionCount() {
+      return Object.values(suggestionCounts).reduce((a, b) => a + b, 0);
+    }
 
     function calcDryYeast(fridgeHours, benchHours, fridgeTemp, roomTemp, count) {
       const totalHours = fridgeHours + benchHours;
@@ -298,8 +282,10 @@
       return round1(clamp(yeast, 0.1, 2.5));
     }
 
-    function state() {
-      const count = clamp(parseInt(els.pizzaCount.value || '4', 10), 1, 20);
+    function currentState() {
+      const manualCount = clamp(parseInt(els.pizzaCount.value || '4', 10), 1, 20);
+      const countFromSuggestions = selectedSuggestionCount();
+      const count = countFromSuggestions > 0 ? countFromSuggestions : manualCount;
       const ball = clamp(parseFloat(els.ballWeight.value || '250'), 180, 400);
       const hydrationPct = clamp(parseFloat(els.hydration.value || '62'), 55, 75);
       const hydration = hydrationPct / 100;
@@ -318,24 +304,56 @@
       const totalDough = round1(flour + water + salt + dryYeast);
       const actualBall = round1(totalDough / count);
       const totalHours = round1(fridgeHours + benchHours);
-      const sauceTotal = round0(count * 80);
-      const tomatoCanEstimate = Math.ceil(sauceTotal / 400);
-      const mozzarellaTotal = round0(count * 90);
-      const basilTotal = round0(count * 3);
-      const oliveOilTotal = round0(count * 5);
-      return { count, ball, hydrationPct, saltPctDisplay: round1(saltPct*100), fridgeHours, benchHours, fridgeTemp, roomTemp, flour, water, salt, dryYeast, freshYeast, totalDough, actualBall, totalHours, ovenType: els.ovenType.value, sauceTotal, tomatoCanEstimate, mozzarellaTotal, basilTotal, oliveOilTotal };
+
+      return {
+        manualCount, countFromSuggestions, count, ball, hydrationPct, saltPctDisplay: round1(saltPct*100),
+        fridgeHours, benchHours, fridgeTemp, roomTemp, flour, water, salt, dryYeast, freshYeast, totalDough, actualBall,
+        totalHours, ovenType: els.ovenType.value
+      };
     }
 
     function ingredientItem(key, title, amount) {
       return `<label class="ingredient"><input type="checkbox" data-check="${key}"><div><div class="name">${title}</div><div class="muted">${amount}</div></div></label>`;
     }
 
+    function renderSuggestionCards() {
+      els.pizzaSuggestionGrid.innerHTML = pizzaSuggestions.map((p, index) => `
+        <div class="pizza-card">
+          <div class="pizza-card-title">
+            <div>
+              <div class="name">${index + 1}. ${p.name}</div>
+              <div class="muted">${p.sauce}, ${p.ingredients.join(', ')}</div>
+            </div>
+            <span class="pizza-badge">Forslag</span>
+          </div>
+          <div class="pizza-actions">
+            <button class="pizza-btn" data-dec="${p.id}" aria-label="Minus">−</button>
+            <div class="counter" id="count_${p.id}">${suggestionCounts[p.id]}</div>
+            <button class="pizza-btn" data-inc="${p.id}" aria-label="Pluss">+</button>
+          </div>
+        </div>`).join('');
+
+      document.querySelectorAll('[data-inc]').forEach(btn => btn.addEventListener('click', () => {
+        suggestionCounts[btn.dataset.inc] += 1;
+        renderAll();
+      }));
+      document.querySelectorAll('[data-dec]').forEach(btn => btn.addEventListener('click', () => {
+        suggestionCounts[btn.dataset.dec] = Math.max(0, suggestionCounts[btn.dataset.dec] - 1);
+        renderAll();
+      }));
+
+      const selectedText = selectedSuggestionCount() > 0
+        ? `${selectedSuggestionCount()} pizza(er) valgt fra forslagene. Deig og handleliste bruker dette antallet.`
+        : 'Ingen pizzaforslag valgt ennå. Manuelt antall brukes.';
+      els.selectedPresetCountText.textContent = selectedText;
+    }
+
     function renderMeta(s) {
       els.metaGrid.innerHTML = `
+        <div class="meta-box"><div class="meta-kicker">Pizzaer</div><div class="meta-value">${s.count}</div></div>
         <div class="meta-box"><div class="meta-kicker">Deigball</div><div class="meta-value">${round1(s.ball)} g</div></div>
         <div class="meta-box"><div class="meta-kicker">Hydrering</div><div class="meta-value">${s.hydrationPct}%</div></div>
         <div class="meta-box"><div class="meta-kicker">Tørrgjær</div><div class="meta-value">${s.dryYeast} g</div></div>
-        <div class="meta-box"><div class="meta-kicker">Total deig</div><div class="meta-value">${s.totalDough} g</div></div>
         <div class="meta-box"><div class="meta-kicker">Fermentering</div><div class="meta-value">${fmtHours(s.totalHours)}</div></div>
       `;
     }
@@ -357,7 +375,7 @@
         <div class="row"><div>Mel</div><div>${s.flour} g</div><div>100 %</div></div>
         <div class="row"><div>Vann</div><div>${s.water} g</div><div>${s.hydrationPct} %</div></div>
         <div class="row"><div>Salt</div><div>${s.salt} g</div><div>${s.saltPctDisplay} %</div></div>
-        <div class="row"><div>Tørrgjær</div><div>${s.dryYeast} g</div><div>${round1((s.dryYeast/s.flour)*100)} %</div></div>
+        <div class="row"><div>Tørrgjær</div><div>${s.dryYeast} g</div><div>${round1((s.dryYeast / s.flour) * 100)} %</div></div>
       `;
     }
 
@@ -384,13 +402,25 @@
         step(4, 'Kjøleskap', s.fridgeHours > 0 ? `Sett deigballene på kjøl i ${fmtHours(s.fridgeHours)} ved ${s.fridgeTemp} °C.` : 'Du har valgt å hoppe over kjøleskapsheving.', s.fridgeHours > 0 ? 'Lenger kjøleskapsheving gir ofte mer smak og bedre håndtering.' : 'Hvis du hopper over kjøl, må du ofte følge ekstra godt med på deigen.'),
         step(5, 'Benk før steking', `Ta deigen ut og la den stå på benken i ${fmtHours(s.benchHours)} ved ${s.roomTemp} °C.`, 'Dette gjør deigen lettere å strekke ut og mer forutsigbar.'),
         step(6, 'Strekk bunnen', 'Press forsiktig luft fra midten og utover, men behold luft i kanten. Strekk bunnen for hånd.', 'Ikke bruk kjevle hvis du vil ha luftig cornicione.'),
-        step(7, 'Pizzasaus og topping', 'Lag enkel pizzasaus og bruk moderat mengde mozzarella, basilikum og litt olivenolje. Se egen side for handleliste.', 'Napoliansk pizza tåler overraskende lite topping før den blir tung.'),
+        step(7, 'Velg pizzaforslag', 'Bruk kortene over for å velge én eller flere pizzaer. Handlelisten summerer automatisk saus og topping basert på valget ditt.', 'Hvis ingen forslag er valgt, vises en enkel standard handleliste med tomatsaus, mozzarella, basilikum og olivenolje.'),
         step(8, 'Stek', `${ovenModes[s.ovenType].title}: sikt mot ${ovenModes[s.ovenType].temp} og ca. ${ovenModes[s.ovenType].time}.`, ovenModes[s.ovenType].summary)
       ].join('');
     }
 
+    function aggregateToppingsFromSuggestions() {
+      const totals = {};
+      pizzaSuggestions.forEach(pizza => {
+        const count = suggestionCounts[pizza.id] || 0;
+        if (!count) return;
+        Object.entries(pizza.toppingWeights).forEach(([key, value]) => {
+          totals[key] = (totals[key] || 0) + (value * count);
+        });
+      });
+      return totals;
+    }
+
     function renderSummary(s) {
-      const yeastLabel = s.dryYeast <= 0.3 ? 'Lav gjærmengde' : s.dryYeast <= 0.8 ? 'Moderat gjærmengde' : 'Relativt aktiv deig';
+      const selectedCount = selectedSuggestionCount();
       els.summary.innerHTML = `
         <strong>Oppsummering:</strong>
         <ul>
@@ -398,8 +428,9 @@
           <li><strong>${s.hydrationPct}%</strong> hydrering og <strong>${s.saltPctDisplay}%</strong> salt</li>
           <li>Kjøl: <strong>${fmtHours(s.fridgeHours)}</strong> ved <strong>${s.fridgeTemp} °C</strong></li>
           <li>Benk: <strong>${fmtHours(s.benchHours)}</strong> ved <strong>${s.roomTemp} °C</strong></li>
-          <li>Anbefalt gjær: <strong>${s.dryYeast} g tørrgjær</strong> (ca. ${s.freshYeast} g fersk) – ${yeastLabel}</li>
+          <li>Anbefalt gjær: <strong>${s.dryYeast} g tørrgjær</strong> (ca. ${s.freshYeast} g fersk)</li>
           <li>Steking: <strong>${ovenModes[s.ovenType].title}</strong>, ${ovenModes[s.ovenType].temp}, ca. ${ovenModes[s.ovenType].time}</li>
+          <li>Valgte pizzaforslag: <strong>${selectedCount}</strong>${selectedCount > 0 ? ' – handlelisten er tilpasset disse.' : ' – manuell handleliste vises.'}</li>
         </ul>
       `;
     }
@@ -429,20 +460,58 @@
         { name: 'Fint havsalt', amount: `${s.salt} g` },
         { name: 'Tørrgjær', amount: `${s.dryYeast} g (eller ca. ${s.freshYeast} g fersk gjær)` }
       ];
-      const sauce = [
-        { name: 'Hermetiske tomater til pizzasaus', amount: `ca. ${s.sauceTotal} g totalt (ca. ${s.tomatoCanEstimate} boks à 400 g)` },
-        { name: 'Salt til saus', amount: 'etter smak, start forsiktig' },
-        { name: 'Eventuelt litt olivenolje i saus', amount: 'liten skvett om ønskelig' }
-      ];
-      const topping = [
-        { name: 'Mozzarella / fior di latte', amount: `${s.mozzarellaTotal} g totalt` },
-        { name: 'Frisk basilikum', amount: `${s.basilTotal} g eller noen blader per pizza` },
-        { name: 'Olivenolje', amount: `${s.oliveOilTotal} g / ml totalt` }
-      ];
-      els.shoppingSections.innerHTML = [shopSection('Deig', dough, 'dough'), shopSection('Pizzasaus', sauce, 'sauce'), shopSection('Topping', topping, 'topping')].join('');
+
+      const selectedCount = selectedSuggestionCount();
+      let sauceItems = [];
+      let toppingItems = [];
+
+      if (selectedCount > 0) {
+        const totals = aggregateToppingsFromSuggestions();
+        sauceItems = [
+          ...(totals.tomatsaus ? [{ name: 'Tomatsaus', amount: `${round0(totals.tomatsaus)} g totalt` }] : []),
+          ...(totals.hvitsaus ? [{ name: 'Hvit saus', amount: `${round0(totals.hvitsaus)} g totalt` }] : []),
+          { name: 'Salt til saus', amount: 'etter smak' },
+          { name: 'Evt. litt olivenolje i saus', amount: 'liten skvett om ønskelig' }
+        ];
+
+        const map = {
+          mozzarella: 'Mozzarella', nduja: 'Nduja', chili: 'Chili', blamuggost: 'Blåmuggost', pinjekjerner: 'Pinjekjerner',
+          ruccola: 'Ruccola', spekeskinke: 'Spekeskinke', basilikum: 'Fersk basilikum', pepperoni: 'Pepperoni', skinke: 'Skinke',
+          kylling: 'Marinert kylling', cherrytomater: 'Cherrytomater'
+        };
+        toppingItems = Object.entries(map)
+          .filter(([key]) => totals[key])
+          .map(([key, label]) => ({ name: label, amount: `${round0(totals[key])} g totalt` }));
+      } else {
+        sauceItems = [
+          { name: 'Hermetiske tomater til pizzasaus', amount: `ca. ${round0(s.count * 80)} g totalt (ca. ${Math.ceil((s.count * 80)/400)} boks à 400 g)` },
+          { name: 'Salt til saus', amount: 'etter smak, start forsiktig' },
+          { name: 'Evt. litt olivenolje i saus', amount: 'liten skvett om ønskelig' }
+        ];
+        toppingItems = [
+          { name: 'Mozzarella', amount: `${round0(s.count * 90)} g totalt` },
+          { name: 'Frisk basilikum', amount: `${round0(s.count * 3)} g eller noen blader per pizza` },
+          { name: 'Olivenolje', amount: `${round0(s.count * 5)} g / ml totalt` }
+        ];
+      }
+
+      els.shoppingSections.innerHTML = [
+        shopSection('Deig', dough, 'dough'),
+        shopSection('Pizzasaus', sauceItems, 'sauce'),
+        shopSection('Topping', toppingItems, 'topping')
+      ].join('');
+
       restoreShopChecks();
       bindShopChecks();
-      els.shoppingSummary.innerHTML = `<strong>Handleliste-oppsummering:</strong><ul><li><strong>${s.count}</strong> pizzaer på ca. <strong>${round1(s.ball)} g</strong> per deigball</li><li>Deig: mel, vann, salt og gjær regnet ut automatisk</li><li>Pizzasaus: ca. <strong>${s.sauceTotal} g</strong> ferdig saus</li><li>Topping: ca. <strong>${s.mozzarellaTotal} g</strong> mozzarella, basilikum og olivenolje</li></ul>`;
+
+      els.shoppingSummary.innerHTML = `
+        <strong>Handleliste-oppsummering:</strong>
+        <ul>
+          <li><strong>${s.count}</strong> pizzaer på ca. <strong>${round1(s.ball)} g</strong> per deigball</li>
+          <li>Deig: mel, vann, salt og gjær regnet ut automatisk</li>
+          <li>${selectedCount > 0 ? `Pizzaforslag valgt: <strong>${selectedCount}</strong> – topping og saus er tilpasset valgene dine.` : 'Ingen pizzaforslag valgt – standard handleliste vises.'}</li>
+        </ul>
+      `;
     }
 
     function saveChecks() {
@@ -477,15 +546,9 @@
 
     function presetState() {
       return {
-        pizzaCount: els.pizzaCount.value,
-        ballWeight: els.ballWeight.value,
-        hydration: els.hydration.value,
-        saltPct: els.saltPct.value,
-        fridgeHours: els.fridgeHours.value,
-        benchHours: els.benchHours.value,
-        fridgeTemp: els.fridgeTemp.value,
-        roomTemp: els.roomTemp.value,
-        ovenType: els.ovenType.value,
+        pizzaCount: els.pizzaCount.value, ballWeight: els.ballWeight.value, hydration: els.hydration.value, saltPct: els.saltPct.value,
+        fridgeHours: els.fridgeHours.value, benchHours: els.benchHours.value, fridgeTemp: els.fridgeTemp.value, roomTemp: els.roomTemp.value,
+        ovenType: els.ovenType.value, suggestionCounts: { ...suggestionCounts },
         name: els.presetName.value.trim() || `Preset ${new Date().toLocaleString('nb-NO')}`
       };
     }
@@ -497,16 +560,11 @@
       localStorage.setItem('napoli_github_presets', JSON.stringify(list));
     }
     function loadPreset(p) {
-      els.pizzaCount.value = p.pizzaCount;
-      els.ballWeight.value = p.ballWeight;
-      els.hydration.value = p.hydration;
-      els.saltPct.value = p.saltPct;
-      els.fridgeHours.value = p.fridgeHours;
-      els.benchHours.value = p.benchHours;
-      els.fridgeTemp.value = p.fridgeTemp;
-      els.roomTemp.value = p.roomTemp;
-      els.ovenType.value = p.ovenType;
-      els.presetName.value = p.name || '';
+      els.pizzaCount.value = p.pizzaCount; els.ballWeight.value = p.ballWeight; els.hydration.value = p.hydration; els.saltPct.value = p.saltPct;
+      els.fridgeHours.value = p.fridgeHours; els.benchHours.value = p.benchHours; els.fridgeTemp.value = p.fridgeTemp; els.roomTemp.value = p.roomTemp;
+      els.ovenType.value = p.ovenType; els.presetName.value = p.name || '';
+      Object.keys(suggestionCounts).forEach(k => suggestionCounts[k] = 0);
+      if (p.suggestionCounts) Object.entries(p.suggestionCounts).forEach(([k,v]) => { if (k in suggestionCounts) suggestionCounts[k] = v; });
       renderAll();
     }
     function renderPresets() {
@@ -526,7 +584,8 @@
 
     function renderAll() {
       els.hydrationValue.textContent = `${els.hydration.value} %`;
-      const s = state();
+      const s = currentState();
+      renderSuggestionCards();
       renderMeta(s);
       renderIngredients(s);
       renderBakers(s);
@@ -559,6 +618,7 @@
     $('resetChecksBtn').addEventListener('click', () => {
       localStorage.removeItem('napoli_github_checks');
       localStorage.removeItem('napoli_github_shop_checks');
+      Object.keys(suggestionCounts).forEach(k => suggestionCounts[k] = 0);
       renderAll();
     });
 
