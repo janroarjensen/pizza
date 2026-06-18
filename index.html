@@ -120,6 +120,7 @@
   <div class="container">
     <div class="tabs print-hide">
       <button class="tab active" data-page="recipePage">Oppskrift</button>
+      <button class="tab" data-page="pizzaSuggestionsPage">Forslag til pizzaer</button>
       <button class="tab" data-page="shoppingPage">Handleliste</button>
     </div>
 
@@ -132,12 +133,12 @@
                 <div class="emoji">🍕</div>
                 <div>
                   <h1>Napoliansk Pizza PRO+</h1>
-                  <p class="sub">GitHub-klar versjon med pizzaforslag fra bildet. Når en pizza legges til, oppdateres handlelisten automatisk med passende saus og topping.</p>
+                  <p class="sub">GitHub-klar versjon der pizzaforslag ligger på egen side mellom Oppskrift og Handleliste.</p>
                 </div>
               </div>
               <div class="pizza-mini" aria-hidden="true"></div>
             </div>
-            <div class="notice">Pizzaforslagene er hentet fra bildet: Nduja, Blåmuggost, Parma, Margherita, Pepperoni og Skinke, og Kylling. Mengder i handlelisten er praktiske estimater per pizza.</div>
+            <div class="notice">Deig, fermentering og steking styres her. Pizzaforslagene er flyttet til egen side, og handlelisten oppdateres automatisk når forslag velges.</div>
           </div>
           <div class="card-body">
             <div class="section print-hide">
@@ -167,11 +168,6 @@
                 <div class="field"><label for="presetName">Preset-navn</label><input id="presetName" type="text" placeholder="F.eks. Fredag 48t 250g"></div>
                 <div class="field"><label>Valgte pizzaforslag</label><div class="hint" id="selectedPresetCountText">Ingen pizzaforslag valgt ennå.</div></div>
               </div>
-            </div>
-
-            <div class="section print-hide">
-              <div class="section-title">Forslag til pizzaer fra bildet</div>
-              <div class="pizza-grid" id="pizzaSuggestionGrid"></div>
             </div>
 
             <div class="section"><div class="section-title">Nøkkeltall</div><div class="meta-grid" id="metaGrid"></div></div>
@@ -204,6 +200,36 @@
       </div>
     </div>
 
+    <div id="pizzaSuggestionsPage" class="page">
+      <div class="layout">
+        <main class="card">
+          <div class="card-header">
+            <div class="hero">
+              <div class="title-wrap">
+                <div class="emoji">🍽️</div>
+                <div>
+                  <h1>Forslag til pizzaer</h1>
+                  <p class="sub">Velg pizzaene du vil lage. Når du trykker på pluss eller minus, oppdateres handlelisten automatisk.</p>
+                </div>
+              </div>
+              <div class="pizza-mini" aria-hidden="true"></div>
+            </div>
+            <div class="notice">Trykk <strong>+</strong> for å legge til en pizza og <strong>−</strong> for å fjerne. Antall valgte forslag brukes også til deigberegningen.</div>
+          </div>
+          <div class="card-body">
+            <div class="section">
+              <div class="section-title">Pizzaer fra bildet</div>
+              <div class="pizza-grid" id="pizzaSuggestionGrid"></div>
+            </div>
+          </div>
+        </main>
+        <aside class="card sticky">
+          <div class="card-header"><div class="hero"><div class="title-wrap"><div class="emoji" style="background:#f3f4f6;">🍕</div><div><h2>Valgte pizzaer</h2><p class="sub">Dette valget styrer handlelisten.</p></div></div></div></div>
+          <div class="card-body"><div class="summary" id="pizzaSuggestionsSummary"></div></div>
+        </aside>
+      </div>
+    </div>
+
     <div id="shoppingPage" class="page">
       <div class="layout">
         <main class="card">
@@ -218,7 +244,7 @@
               </div>
               <div class="pizza-mini small" aria-hidden="true"></div>
             </div>
-            <div class="notice">Når du trykker på et pizzaforslag på oppskriftssiden, legges passende ingredienser inn her automatisk.</div>
+            <div class="notice">Når du velger pizzaer på siden <strong>Forslag til pizzaer</strong>, legges passende ingredienser inn her automatisk.</div>
           </div>
           <div class="card-body"><div class="shop-sections" id="shoppingSections"></div></div>
         </main>
@@ -253,7 +279,7 @@
       ovenType: $('ovenType'), presetName: $('presetName'), metaGrid: $('metaGrid'), ingredientList: $('ingredientList'),
       bakersTable: $('bakersTable'), timeline: $('timeline'), stepList: $('stepList'), summary: $('summary'), ovenSummary: $('ovenSummary'),
       presetList: $('presetList'), shoppingSections: $('shoppingSections'), shoppingSummary: $('shoppingSummary'),
-      pizzaSuggestionGrid: $('pizzaSuggestionGrid'), selectedPresetCountText: $('selectedPresetCountText')
+      pizzaSuggestionGrid: $('pizzaSuggestionGrid'), selectedPresetCountText: $('selectedPresetCountText'), pizzaSuggestionsSummary: $('pizzaSuggestionsSummary')
     };
 
     const round1 = (n) => Math.round(n * 10) / 10;
@@ -328,7 +354,7 @@
           </div>
           <div class="pizza-actions">
             <button class="pizza-btn" data-dec="${p.id}" aria-label="Minus">−</button>
-            <div class="counter" id="count_${p.id}">${suggestionCounts[p.id]}</div>
+            <div class="counter">${suggestionCounts[p.id]}</div>
             <button class="pizza-btn" data-inc="${p.id}" aria-label="Pluss">+</button>
           </div>
         </div>`).join('');
@@ -346,6 +372,14 @@
         ? `${selectedSuggestionCount()} pizza(er) valgt fra forslagene. Deig og handleliste bruker dette antallet.`
         : 'Ingen pizzaforslag valgt ennå. Manuelt antall brukes.';
       els.selectedPresetCountText.textContent = selectedText;
+
+      const lines = pizzaSuggestions
+        .filter(p => suggestionCounts[p.id] > 0)
+        .map(p => `<li><strong>${suggestionCounts[p.id]}</strong> × ${p.name}</li>`)
+        .join('');
+      els.pizzaSuggestionsSummary.innerHTML = selectedSuggestionCount() > 0
+        ? `<strong>Valgte pizzaer:</strong><ul>${lines}</ul>`
+        : '<strong>Valgte pizzaer:</strong><ul><li>Ingen valgt ennå.</li></ul>';
     }
 
     function renderMeta(s) {
@@ -402,7 +436,7 @@
         step(4, 'Kjøleskap', s.fridgeHours > 0 ? `Sett deigballene på kjøl i ${fmtHours(s.fridgeHours)} ved ${s.fridgeTemp} °C.` : 'Du har valgt å hoppe over kjøleskapsheving.', s.fridgeHours > 0 ? 'Lenger kjøleskapsheving gir ofte mer smak og bedre håndtering.' : 'Hvis du hopper over kjøl, må du ofte følge ekstra godt med på deigen.'),
         step(5, 'Benk før steking', `Ta deigen ut og la den stå på benken i ${fmtHours(s.benchHours)} ved ${s.roomTemp} °C.`, 'Dette gjør deigen lettere å strekke ut og mer forutsigbar.'),
         step(6, 'Strekk bunnen', 'Press forsiktig luft fra midten og utover, men behold luft i kanten. Strekk bunnen for hånd.', 'Ikke bruk kjevle hvis du vil ha luftig cornicione.'),
-        step(7, 'Velg pizzaforslag', 'Bruk kortene over for å velge én eller flere pizzaer. Handlelisten summerer automatisk saus og topping basert på valget ditt.', 'Hvis ingen forslag er valgt, vises en enkel standard handleliste med tomatsaus, mozzarella, basilikum og olivenolje.'),
+        step(7, 'Gå til siden "Forslag til pizzaer"', 'Der kan du velge pizzaer med pluss og minus. Handlelisten og totalantallet blir automatisk oppdatert.', 'Hvis ingen forslag er valgt, brukes manuelt antall og standard handleliste.'),
         step(8, 'Stek', `${ovenModes[s.ovenType].title}: sikt mot ${ovenModes[s.ovenType].temp} og ca. ${ovenModes[s.ovenType].time}.`, ovenModes[s.ovenType].summary)
       ].join('');
     }
