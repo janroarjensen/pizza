@@ -183,6 +183,7 @@ async function deleteOrder(orderDate, orderId){if(!db) return; if(!isAdmin()){al
 async function clearOrdersForDate(orderDate){if(!db) return; if(!isAdmin()){alert('Du må være administrator.'); return;} try{await remove(ref(db, `${ordersPath()}/${orderDate}`)); showToast('Bestillinger for datoen er slettet.');}catch(err){console.error(err); alert(`Kunne ikke slette dato: ${err.message}`);}}
 function renderAdminOrders(){if(!els.adminOrdersCatalog || !els.adminOrdersSummary) return; const dates=Object.keys(publicOrdersByDate||{}).sort((a,b)=>a<b?1:-1); const totalOrders=dates.reduce((sum,date)=>sum+Object.keys(publicOrdersByDate[date]||{}).length,0); const totalPizzas=dates.reduce((sum,date)=>sum+Object.values(publicOrdersByDate[date]||{}).reduce((acc,order)=>acc+(order?.items||[]).reduce((n,item)=>n+Number(item?.count||0),0),0),0); els.adminOrdersSummary.innerHTML=`<strong>Oversikt:</strong><ul><li>Datoer med bestillinger: <strong>${dates.length}</strong></li><li>Bestillinger totalt: <strong>${totalOrders}</strong></li><li>Pizzaer totalt: <strong>${totalPizzas}</strong></li></ul>`; if(!dates.length){els.adminOrdersCatalog.innerHTML='<div class="catalog-item"><div class="muted">Ingen bestillinger registrert ennå.</div></div>'; return;} els.adminOrdersCatalog.innerHTML=dates.map(date=>{const entries=Object.entries(publicOrdersByDate[date]||{}).sort((a,b)=>(b[1]?.submittedAt||0)-(a[1]?.submittedAt||0)); const totals={}; entries.forEach(([,order])=>(order?.items||[]).forEach(item=>totals[item.name]=(totals[item.name]||0)+Number(item.count||0))); const totalLine=Object.entries(totals).map(([name,count])=>`${count} × ${name}`).join(' · ') || 'Ingen pizzaer registrert'; return `<div class="order-date-card"><div class="catalog-title"><div><div class="name">${formatOrderDate(date)}</div><div class="muted">${entries.length} bestilling(er)</div></div><div class="order-toolbar"><button class="btn btn-secondary btn-small" data-clear-order-date="${date}">Slett dato</button></div></div><div class="order-note"><strong>Produksjonsliste:</strong><br>${totalLine}</div><div class="order-list">${entries.map(([id,order])=>`<div class="order-line"><div><div class="name">${order.customerName||'Ukjent bestiller'}</div><div class="muted">${(order.items||[]).map(item=>`${item.count} × ${item.name}`).join(' · ') || 'Ingen pizzaer'}${order.comment?` · Kommentar: ${order.comment}`:''}</div></div><button class="btn btn-danger btn-small" data-delete-order-date="${date}" data-delete-order-id="${id}">Slett</button></div>`).join('')}</div></div>`;}).join(''); document.querySelectorAll('[data-delete-order-id]').forEach(btn=>btn.addEventListener('click',()=>deleteOrder(btn.dataset.deleteOrderDate, btn.dataset.deleteOrderId))); document.querySelectorAll('[data-clear-order-date]').forEach(btn=>btn.addEventListener('click',()=>clearOrdersForDate(btn.dataset.clearOrderDate)));}
 
+
 function supportPanelSettingsPath(){return 'public/supportPanelSettings';}
 function setSupportPanelEditorPreview(src=''){
   if(els.supportPanelImageInput) els.supportPanelImageInput.value = src || '';
@@ -195,7 +196,11 @@ function applySupportPanelVisibility(){
   const title = String(supportPanelSettings?.title || 'Liker du siden?').trim() || 'Liker du siden?';
   const desc = String(supportPanelSettings?.desc || 'Et lite bidrag hjelper oss til å utvikle siden.').trim() || 'Et lite bidrag hjelper oss til å utvikle siden.';
   const image = String(supportPanelSettings?.image || '').trim();
-  if(els.supportPanel) els.supportPanel.classList.toggle('hidden', !visible);
+  if(els.supportPanel){
+    if(visible) els.supportPanel.classList.remove('hidden');
+    else els.supportPanel.classList.add('hidden');
+    els.supportPanel.style.display = visible ? '' : 'none';
+  }
   if(els.supportPanelVisible) els.supportPanelVisible.value = visible ? 'on' : 'off';
   if(els.supportPanelTitle) els.supportPanelTitle.textContent = title;
   if(els.supportPanelDesc) els.supportPanelDesc.textContent = desc;
@@ -214,20 +219,18 @@ async function ensureBootstrapSupportPanelSettings(){
   if(!snap.exists()){
     const initial = {visible:true,title:'Liker du siden?',desc:'Et lite bidrag hjelper oss til å utvikle siden.',image:'Screenshot_20260622_135339_Vipps.jpg'};
     await set(ref(db, supportPanelSettingsPath()), initial);
-    supportPanelSettings=initial;
-    applySupportPanelVisibility();
+    supportPanelSettings = initial;
+  } else {
+    const raw = snap.val() || {};
+    supportPanelSettings = {visible:!!raw.visible,title:String(raw.title||'Liker du siden?'),desc:String(raw.desc||'Et lite bidrag hjelper oss til å utvikle siden.'),image:String(raw.image||'Screenshot_20260622_135339_Vipps.jpg')};
   }
+  applySupportPanelVisibility();
 }
 function subscribeSupportPanelSettings(){
   if(!db) return;
   onValue(ref(db, supportPanelSettingsPath()), snap=>{
     const raw=snap.exists() ? snap.val() : {};
-    supportPanelSettings={
-      visible: !!raw?.visible,
-      title: String(raw?.title || 'Liker du siden?'),
-      desc: String(raw?.desc || 'Et lite bidrag hjelper oss til å utvikle siden.'),
-      image: String(raw?.image || 'Screenshot_20260622_135339_Vipps.jpg')
-    };
+    supportPanelSettings={visible:!!raw?.visible,title:String(raw?.title||'Liker du siden?'),desc:String(raw?.desc||'Et lite bidrag hjelper oss til å utvikle siden.'),image:String(raw?.image||'Screenshot_20260622_135339_Vipps.jpg')};
     applySupportPanelVisibility();
   });
 }
@@ -252,12 +255,13 @@ async function saveSupportPanelSettings(){
     desc: String(els.supportPanelDescInput?.value || '').trim() || 'Et lite bidrag hjelper oss til å utvikle siden.',
     image: String(els.supportPanelImageInput?.value || '').trim() || 'Screenshot_20260622_135339_Vipps.jpg'
   };
-  await set(ref(db, supportPanelSettingsPath()), payload);
   supportPanelSettings = payload;
   applySupportPanelVisibility();
-  showToast('Støttepanel lagret.');
+  await set(ref(db, supportPanelSettingsPath()), payload);
+  showToast(payload.visible ? 'Støttepanel lagret og vises.' : 'Støttepanel skjult.');
 }
 function visitCounterPath(){return 'public/visitCounter';}
+
 function formatDateTimeNb(ts){if(!ts) return 'Ingen registrert ennå'; const d=new Date(Number(ts)); return Number.isNaN(d.getTime()) ? 'Ingen registrert ennå' : d.toLocaleString('nb-NO');}
 function renderVisitCounter(){
   const dates=visitCounter?.byDate && typeof visitCounter.byDate==='object' ? Object.keys(visitCounter.byDate).sort((a,b)=>a<b?1:-1) : [];
