@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>PizzaDilla</title>
+  <title>PizzaDilla – Napoli Premium</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E%F0%9F%8D%95%3C/text%3E%3C/svg%3E">
   <style>
     :root {--bg:#21140f; --card:#fffaf4; --primary:#9f1239; --primary2:#c2410c; --text:#261b17; --muted:#7a5a4b; --border:#e8c9a8; --soft:#fff1e4; --radius:24px; --shadow:0 18px 38px rgba(0,0,0,.18); --danger:#b91c1c; --gold:#d6a93d; --tomato:#b91c1c; --basil:#255d3b; --cream:#fff8f1;}
@@ -130,7 +130,7 @@ import { getDatabase, ref, get, set, update, push, remove, onValue } from "https
 // Sikkerhetsmerknad: Denne HTML-filen kjører i nettleseren. Klientsidekode kan ikke skjule ekte hemmeligheter.
 // Reell beskyttelse må ligge i Firebase Authentication, Database Rules og eventuelle serverfunksjoner.
 const FIREBASE_CONFIG = window.FIREBASE_CONFIG || {apiKey:"AIzaSyAjzZ-iA3R_9VII-OktCnS2S5xu-y1mAQQ",authDomain:"pizzadilla-830e6.firebaseapp.com",databaseURL:"https://pizzadilla-830e6-default-rtdb.europe-west1.firebasedatabase.app",projectId:"pizzadilla-830e6",storageBucket:"pizzadilla-830e6.firebasestorage.app",messagingSenderId:"482546506024",appId:"1:482546506024:web:c76a1c1c30c4e8ec86d81d",measurementId:"G-E2XPLXS3QN"};
-const ADMIN_UIDS = window.ADMIN_UIDS || ["Lodrv4jbVhNlWCzsgpY897e9Ua32"];
+const ADMIN_UIDS = window.ADMIN_UIDS || ["Lodrv4jbVhNlWCzsgpY897e9Ua32","QazXIVWPn2cPSyWkg4Vfs2Hb3TK2","lZ785tP5JwXoiBdh4HbS23BhrXd2"];
 const firebaseReady = !!FIREBASE_CONFIG.apiKey && !!FIREBASE_CONFIG.databaseURL;
 const ovenModes={home:{title:'Vanlig hjemmeovn',temp:'250–300 °C',time:'4–7 min',summary:'Forvarm lenge. Bruk høyeste temperatur og gjerne grill helt til slutt.'},steel:{title:'Hjemmeovn + pizzastål',temp:'275–300 °C',time:'3–5 min',summary:'Forvarm stålet godt for bedre bunn og raskere steking.'},pizza_oven:{title:'Pizzaovn',temp:'400–480 °C',time:'60–120 sek',summary:'Roter pizzaen ofte og følg nøye med på bunnen.'},wood:{title:'Vedfyrt ovn',temp:'430–485 °C',time:'60–90 sek',summary:'Klassisk stil. Hold jevn temperatur og bruk lett topping.'}};
 const defaultPizzaSauces=[{id:'tomatsaus',name:'Tomatsaus',category:'Tomat',weight:80,ingredients:['San Marzano tomater','Salt','Olivenolje'],recipeWeights:{'san_marzano_tomater':400,'salt':8,'olivenolje':10},method:'Knus tomatene forsiktig med hånden eller en kort puls i blender. Rør inn salt og litt olivenolje. Ikke kok.',tip:'La sausen stå 15–20 minutter før bruk.'},{id:'hvitsaus',name:'Hvitsaus',category:'Hvit',weight:70,ingredients:['Crème fraîche','Parmesan','Sort pepper'],recipeWeights:{'creme_fraiche':200,'parmesan':30,'sort_pepper':1},method:'Rør sammen ingrediensene til en glatt saus.',tip:'Passer godt til sopp, spekeskinke og ruccola.'},{id:'pesto',name:'Pesto',category:'Grønn',weight:30,ingredients:['Basilikum','Pinjekjerner','Parmesan','Olivenolje'],recipeWeights:{'basilikum':30,'pinjekjerner':20,'parmesan':30,'olivenolje':60},method:'Kjør alt til ønsket konsistens.',tip:'Brukes best i små mengder eller etter steking.'},{id:'ingen',name:'Ingen saus',category:'Ingen',weight:0,ingredients:[],recipeWeights:{},method:'',tip:''}];
